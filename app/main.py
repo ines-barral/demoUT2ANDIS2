@@ -3,7 +3,11 @@ from pydantic import BaseModel
 
 from app.reglas.registro import obtener_regla
 
-app = FastAPI(title="API Cinta Transportadora - Demo UT2")
+app = FastAPI(
+    title="API Cinta Transportadora - Demo UT2",
+    description="Sanity check de paquetes antes de ingresar a la cinta transportadora.",
+    version="1.0.0",
+)
 
 
 class Paquete(BaseModel):
