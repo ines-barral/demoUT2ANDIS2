@@ -1,0 +1,179 @@
+CASOS DE PRUEBA - POST /paquetes
+==================================
+Límites vigentes según .env:
+  normal: peso_kg<=5, alto_cm<=60, ancho_cm<=60, largo_cm<=80
+  fragil: peso_kg<=8, alto_cm<=40, ancho_cm<=40, largo_cm<=50
+
+Cada caso incluye el JSON de entrada y el resultado esperado.
+
+##################################################################
+
+CASO 1 - normal VALIDO (todo dentro de limites)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "normal",
+  "peso_kg": 3,
+  "alto_cm": 50,
+  "ancho_cm": 50,
+  "largo_cm": 70
+}
+
+Esperado: 200 -> {"estado": "aceptado", ...}
+
+##################################################################
+
+CASO 2 - normal INVALIDO - excede peso (6 > 5)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "normal",
+  "peso_kg": 6,
+  "alto_cm": 50,
+  "ancho_cm": 50,
+  "largo_cm": 70
+}
+
+Esperado: 422 -> motivo: peso_kg excede el maximo permitido (5) para tipo 'normal'
+
+##################################################################
+
+CASO 3 - normal INVALIDO - excede alto (65 > 60)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "normal",
+  "peso_kg": 3,
+  "alto_cm": 65,
+  "ancho_cm": 50,
+  "largo_cm": 70
+}
+
+Esperado: 422 -> motivo: alto_cm excede el maximo permitido (60) para tipo 'normal'
+
+##################################################################
+
+CASO 4 - normal INVALIDO - excede ancho (65 > 60)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "normal",
+  "peso_kg": 3,
+  "alto_cm": 50,
+  "ancho_cm": 65,
+  "largo_cm": 70
+}
+
+Esperado: 422 -> motivo: ancho_cm excede el maximo permitido (60) para tipo 'normal'
+
+##################################################################
+
+CASO 5 - normal INVALIDO - excede largo (90 > 80)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "normal",
+  "peso_kg": 3,
+  "alto_cm": 50,
+  "ancho_cm": 50,
+  "largo_cm": 90
+}
+
+Esperado: 422 -> motivo: largo_cm excede el maximo permitido (80) para tipo 'normal'
+
+##################################################################
+
+CASO 6 - fragil VALIDO (todo dentro de limites)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "fragil",
+  "peso_kg": 5,
+  "alto_cm": 30,
+  "ancho_cm": 30,
+  "largo_cm": 40
+}
+
+Esperado: 200 -> {"estado": "aceptado", ...}
+
+##################################################################
+
+CASO 7 - fragil INVALIDO - excede peso (9 > 8)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "fragil",
+  "peso_kg": 9,
+  "alto_cm": 30,
+  "ancho_cm": 30,
+  "largo_cm": 40
+}
+
+Esperado: 422 -> motivo: peso_kg excede el maximo permitido (8) para tipo 'fragil'
+
+##################################################################
+
+CASO 8 - fragil INVALIDO - excede alto (45 > 40)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "fragil",
+  "peso_kg": 5,
+  "alto_cm": 45,
+  "ancho_cm": 30,
+  "largo_cm": 40
+}
+
+Esperado: 422 -> motivo: alto_cm excede el maximo permitido (40) para tipo 'fragil'
+
+##################################################################
+
+CASO 9 - fragil INVALIDO - excede ancho (45 > 40)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "fragil",
+  "peso_kg": 5,
+  "alto_cm": 30,
+  "ancho_cm": 45,
+  "largo_cm": 40
+}
+
+Esperado: 422 -> motivo: ancho_cm excede el maximo permitido (40) para tipo 'fragil'
+
+##################################################################
+
+CASO 10 - fragil INVALIDO - excede largo (55 > 50)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "fragil",
+  "peso_kg": 5,
+  "alto_cm": 30,
+  "ancho_cm": 30,
+  "largo_cm": 55
+}
+
+Esperado: 422 -> motivo: largo_cm excede el maximo permitido (50) para tipo 'fragil'
+
+##################################################################
+
+CASO 11 - tipo_paquete NO REGISTRADO
+------------------------------------------------------------------
+{
+  "tipo_paquete": "peligroso",
+  "peso_kg": 1,
+  "alto_cm": 10,
+  "ancho_cm": 10,
+  "largo_cm": 10
+}
+
+Esperado: 422 -> motivo: tipo_paquete 'peligroso' no esta registrado
+
+##################################################################
+
+CASO 12 - normal VALIDO - caso limite exacto (peso == maximo permitido)
+------------------------------------------------------------------
+{
+  "tipo_paquete": "normal",
+  "peso_kg": 5,
+  "alto_cm": 60,
+  "ancho_cm": 60,
+  "largo_cm": 80
+}
+
+Esperado: 200 -> {"estado": "aceptado", ...}
+(la validacion usa ">" estricto, asi que estar EXACTO en el limite todavia es valido; util para
+detectar si alguien cambia la condicion a ">=" por error)
+
+##################################################################
